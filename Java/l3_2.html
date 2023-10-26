@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Интерфейсные события</title>
+</head>
+<body>
+
+<!-- 1. События мыши -->
+<button id="mouseButton">Наведите мышь</button>
+
+<!-- 2. События клавиатуры -->
+<input type="text" id="keyboardInput">
+<div id="keyboardOutput"></div>
+
+<!-- 3. Drag&DROP события -->
+<div id="dragContainer">
+  <div id="draggableItem" draggable="true">Перетащите меня</div>
+  <div id="dropTarget">Сюда перетащите</div>
+</div>
+
+<!-- 4. События указателя -->
+<div id="pointerArea">Попробуйте двигать указатель</div>
+
+<!-- 5. События полосы прокрутки -->
+<button id="scrollButton">Прокрутите страницу</button>
+
+<!-- 6. События сенсорных экранов -->
+<div style="height: 1000px;"></div>
+<div id="touchArea">Коснитесь этой области</div>
+
+<script>
+  // 1. События мыши
+  const mouseButton = document.getElementById('mouseButton');
+  mouseButton.addEventListener('mouseover', () => {
+    alert('Вы навели мышь на кнопку');
+  });
+
+  // 2. События клавиатуры
+  const keyboardInput = document.getElementById('keyboardInput');
+  const keyboardOutput = document.getElementById('keyboardOutput');
+  keyboardInput.addEventListener('keyup', (event) => {
+    keyboardOutput.innerText = `Вы нажали клавишу: ${event.key}`;
+  });
+
+  // 3. Drag&DROP события
+  const draggableItem = document.getElementById('draggableItem');
+  const dropTarget = document.getElementById('dropTarget');
+  draggableItem.addEventListener('dragstart', (event) => {
+    event.dataTransfer.setData('text/plain', 'Перетаскиваемый элемент');
+  });
+  dropTarget.addEventListener('dragover', (event) => {
+    event.preventDefault();
+  });
+  dropTarget.addEventListener('drop', (event) => {
+    event.preventDefault();
+    const data = event.dataTransfer.getData('text/plain');
+    dropTarget.innerText = `Вы перетащили: ${data}`;
+  });
+
+  // 4. События указателя
+  const pointerArea = document.getElementById('pointerArea');
+  document.addEventListener('pointermove', (event) => {
+    const x = event.clientX.toFixed(3);
+    const y = event.clientY.toFixed(3);
+    pointerArea.innerText = `X: ${x}, Y: ${y}`;
+  });
+
+  // 5. События полосы прокрутки
+  const scrollButton = document.getElementById('scrollButton');
+  scrollButton.addEventListener('click', () => {
+    window.scrollTo(0, document.body.scrollHeight);
+  });
+
+  // 6. События сенсорных экранов
+  const touchArea = document.getElementById('touchArea');
+touchArea.addEventListener('touchstart', () => {
+  alert('Коснулись сенсорного экрана');
+});
+
+touchArea.addEventListener('mousedown', () => {
+  alert('Нажали мышью');
+});
+</script>
+
+</body>
+</html>

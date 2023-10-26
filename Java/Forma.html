@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Обратная связь</title>
+  <style>
+    form {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    
+    label, input, textarea {
+      margin-bottom: 10px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Обратная связь</h1>
+  
+  <form id="feedbackForm">
+    <label for="name">Ваше имя:</label>
+    <input type="text" id="name" name="name" required>
+    
+    <label for="email">Ваш E-mail:</label>
+    <input type="email" id="email" name="email" required>
+    
+    <label for="subject">Тема сообщения:</label>
+    <input type="text" id="subject" name="subject" required>
+    
+    <label for="message">Сообщение:</label>
+    <textarea id="message" name="message"></textarea>
+    
+    <label for="captcha">Текст на изображении:</label>
+    <img src="captcha.jpg" alt="Captcha Image">
+    <input type="text" id="captcha" name="captcha" required>
+    
+    <button type="submit">Отправить</button>
+    <button type="button" onclick="clearForm()">Очистить</button>
+  </form>
+
+  <script>
+    // При отправке формы
+    document.getElementById("feedbackForm").addEventListener("submit", function(event) {
+      event.preventDefault(); // Предотвращаем отправку формы
+
+      // Получаем значения полей
+      var name = document.getElementById("name").value;
+      var email = document.getElementById("email").value;
+      var subject = document.getElementById("subject").value;
+      var message = document.getElementById("message").value;
+      var captcha = document.getElementById("captcha").value;
+
+	   // Проверка формата email с использованием регулярного выражения
+  var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRegex.test(email)) {
+    alert("Пожалуйста, введите корректный адрес электронной почты!");
+    return;
+  }
+
+      // Создаем объект с данными формы
+      var formData = {
+        name: name,
+        email: email,
+        subject: subject,
+        message: message,
+        captcha: captcha
+      };
+
+      // Преобразование объект в JSON
+      var jsonData = JSON.stringify(formData);
+
+      alert(jsonData);
+
+	   // Записываем данные в cookie файлы
+	   document.cookie = "name=" + encodeURIComponent(name);
+      document.cookie = "email=" + encodeURIComponent(email);
+      document.cookie = "subject=" + encodeURIComponent(subject);
+      document.cookie = "message=" + encodeURIComponent(message);
+      document.cookie = "captcha=" + encodeURIComponent(captcha);
+
+      alert("Данные сохранены в cookie-файлах!");
+    });
+    
+    // Функция для очистки формы и cookie-файлов
+    function clearForm() {
+      document.getElementById("feedbackForm").reset(); // Очищаем форму
+      
+      // Удаляем cookie-файлы
+      var cookies = document.cookie.split(";");
+      for (var i = 0; i < cookies.length; i++) {
+        var cookie = cookies[i];
+        var eqPos = cookie.indexOf("=");
+        var name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
+        document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT";
+      }
+      
+      alert("Форма очищена и cookie-файлы удалены!");
+    }
+    
+    // При загрузке страницы
+    window.onload = function() {
+      // Выводим значения полей из cookie-файлов на экран
+      var name = decodeURIComponent(getCookie("name"));
+      var email = decodeURIComponent(getCookie("email"));
+      var subject = decodeURIComponent(getCookie("subject"));
+      var message = decodeURIComponent(getCookie("message"));
+      var captcha = decodeURIComponent(getCookie("captcha"));
+      
+      document.getElementById("name").value = name;
+      document.getElementById("email").value = email;
+      document.getElementById("subject").value = subject;
+      document.getElementById("message").value = message;
+      document.getElementById("captcha").value = captcha;
+    };
+    
+    // Функция для получения значения cookie по имени
+    function getCookie(name) {
+      var cookies = document.cookie.split(";");
+      for (var i = 0; i < cookies.length; i++) {
+        var cookie = cookies[i].trim();
+        if (cookie.startsWith(name + "=")) {
+          return cookie.substring(name.length + 1);
+        }
+      }
+      return "";
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Интерфейсные события</title>
+  <style>
+    #dragArea {
+      width: 200px;
+      height: 200px;
+      background-color: lightgray;
+    }
+  </style>
+</head>
+<body>
+  <h2>Интерфейсные события</h2>
+
+  <!-- События мыши -->
+  <button id="mouseButton">Наведите курсор мыши</button>
+  <p id="mouseEvent"></p>
+
+  <!-- События клавиатуры -->
+  <input id="keyboardInput" type="text">
+  <p id="keyboardEvent"></p>
+
+  <!-- Drag&DROP события -->
+  <div id="dragArea" ondrop="drop(event)" ondragover="allowDrop(event)">Перетащите элемент сюда</div>
+  <img id="dragImage" src="example.png" draggable="true" ondragstart="drag(event)">
+  <p id="dragEvent"></p>
+
+  <!-- События указателя -->
+  <p id="pointerEvent">Наведите указатель</p>
+
+  <!-- События полосы прокрутки -->
+  <div id="scrollDiv" onscroll="scrollFunction()">Прокрутите меня</div>
+  <p id="scrollInfo">Прокрутка: 0</p>
+
+  <!-- События сенсорных экранов (для тестирования нужен сенсорный экран) -->
+  <div id="touchArea">Коснитесь экрана</div>
+  <p id="touchEvent"></p>
+
+  <script>
+    // События мыши
+    const mouseButton = document.getElementById("mouseButton");
+    const mouseEvent = document.getElementById("mouseEvent");
+
+    mouseButton.addEventListener("mouseover", function() {
+      mouseEvent.innerHTML = "Курсор мыши наведен на кнопку.";
+    });
+
+    // События клавиатуры
+    const keyboardInput = document.getElementById("keyboardInput");
+    const keyboardEvent = document.getElementById("keyboardEvent");
+
+    keyboardInput.addEventListener("keyup", function(event) {
+      keyboardEvent.innerHTML = "Клавиша '" + event.key + "' нажата.";
+    });
+
+    // Drag&DROP события
+    function allowDrop(event) {
+      event.preventDefault();
+    }
+
+    function drag(event) {
+      event.dataTransfer.setData("text", event.target.id);
+    }
+
+    function drop(event) {
+      event.preventDefault();
+      var data = event.dataTransfer.getData("text");
+      document.getElementById("dragEvent").innerHTML = "Элемент перетащен.";
+      event.target.appendChild(document.getElementById(data));
+    }
+
+    // События указателя
+    const pointerEvent = document.getElementById("pointerEvent");
+    pointerEvent.addEventListener("pointerenter", function() {
+      pointerEvent.innerHTML = "Указатель вошел.";
+    });
+
+    pointerEvent.addEventListener("pointerleave", function() {
+      pointerEvent.innerHTML = "Указатель покинул.";
+    });
+
+    // События полосы прокрутки
+    const scrollDiv = document.getElementById("scrollDiv");
+    const scrollInfo = document.getElementById("scrollInfo");
+
+    scrollDiv.addEventListener("scroll", function() {
+      scrollInfo.innerHTML = "Прокрутка: " + scrollDiv.scrollTop;
+    });
+
+    // События сенсорных экранов (для тестирования нужен сенсорный экран)
+    const touchArea = document.getElementById("touchArea");
+    const touchEvent = document.getElementById("touchEvent");
+
+    touchArea.addEventListener("touchstart", function() {
+      touchEvent.innerHTML = "Экран коснут.";
+    });
+  </script>
+</body>
+</html>

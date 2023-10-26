@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Моя форма</title>
+  <style>
+    .form-container {
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+<div class="form-container">
+  <form id="myForm">
+    <label for="name">Имя:</label><br>
+    <input type="text" id="name" name="name"><br><br>
+    <label for="email">Email:</label><br>
+    <input type="email" id="email" name="email"><br><br>
+    <label for="age">Возраст:</label><br>
+    <input type="number" id="age" name="age"><br><br>
+    <label for="gender">Пол:</label><br>
+    <select id="gender" name="gender">
+      <option value="male">Мужской</option>
+      <option value="female">Женский</option>
+    </select><br><br>
+    <label for="agree">Согласен с условиями:</label>
+    <input type="checkbox" id="agree" name="agree" value="agree"><br><br>
+    <input type="button" value="Отправить" onclick="getData()">
+  </form>
+</div>
+
+<script>
+  function getData() {
+    var name = document.getElementById('name').value;
+    var email = document.getElementById('email').value;
+    var age = document.getElementById('age').value;
+    var gender = document.getElementById('gender').value;
+    var agree = document.getElementById('agree').checked;
+
+    var output = "Имя: " + name + "\nEmail: " + email + "\nВозраст: " + age + "\nПол: " + gender + "\nСогласие с условиями: " + (agree ? "Да" : "Нет");
+    alert(output);
+  }
+</script>
+
+</body>
+</html>
